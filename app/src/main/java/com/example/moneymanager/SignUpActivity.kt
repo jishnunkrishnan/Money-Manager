@@ -30,8 +30,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var loginButtonFacebook: LoginButton
     private lateinit var imageVIew: ImageView
     private var RC_SIGN_IN: Int = 0
-    private var FC_SIGN_IN: Int = 1
-    private lateinit var callBackManager: CallbackManager
+   // private var FC_SIGN_IN: Int = 1
+    //private lateinit var callBackManager: CallbackManager
 
     fun gotoProfile(view: View) {
 
@@ -73,7 +73,7 @@ class SignUpActivity : AppCompatActivity() {
             handleSignInResult(task)
         } else {
 
-            callBackManager.onActivityResult(requestCode, resultCode, data)
+           // callBackManager.onActivityResult(requestCode, resultCode, data)
 
         }
     }
@@ -111,7 +111,7 @@ class SignUpActivity : AppCompatActivity() {
         /*Google sign in api end 1*/
 
         /*FAcebook sign in api Start 1*/
-        loginButtonFacebook = findViewById(R.id.loginButtonFacebook)
+       /* //loginButtonFacebook = findViewById(R.id.loginButtonFacebook)
         imageVIew = findViewById(R.id.imageView)
         callBackManager = CallbackManager.Factory.create()
 
@@ -151,6 +151,8 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
         /*Facebook sign in api end 1*/
+
+        */
 
         /*SideMenu START*/
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)

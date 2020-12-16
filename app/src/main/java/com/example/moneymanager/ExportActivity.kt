@@ -3,6 +3,8 @@ package com.example.moneymanager
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -26,6 +29,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.poi.hssf.usermodel.HSSFCell
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFRow
@@ -33,10 +38,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.hssf.util.HSSFColor
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import org.apache.poi.ss.usermodel.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
+import java.lang.RuntimeException
 
 @Suppress("DEPRECATION")
 class ExportActivity : AppCompatActivity() {
@@ -51,13 +54,9 @@ class ExportActivity : AppCompatActivity() {
     private lateinit var tvSuccess: TextView
     private lateinit var ivProfileNav: ImageView
 
+    var selectedFile = null
     fun gotoProfile(view: View) {
         startActivity(Intent(this, SignUpActivity::class.java))
-    }
-
-    fun saveImport(view: View) {
-
-        readExcelFileFromAssets()
     }
 
     fun saveImportDrive(view: View) {
@@ -69,13 +68,46 @@ class ExportActivity : AppCompatActivity() {
     private var TAG = "main"
     private var textView: TextView? = null
 
-    private fun readExcelFileFromAssets() {
+    fun callIntent() {
+        val intent = Intent()
+                .setType("*/*")
+                .setAction(Intent.ACTION_GET_CONTENT)
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.flags = FLAG_GRANT_READ_URI_PERMISSION or FLAG_GRANT_WRITE_URI_PERMISSION
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), 123)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            400 -> if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    handleSignInIntent(data)
+                }
+            }
+            1 -> if (resultCode == RESULT_OK) {
+                val documentPath = data!!.data
+                var path = documentPath!!.path.toString()
+                val length = path.length
+                path = path.substring(6, length)
+                val root = Environment.getExternalStorageState()
+                val myInput = FileInputStream(path)
+                readExcelFileFromAssets(myInput)
+            }
+        }
+    }
+
+    fun getPath(view: View) {
+        var chooseFile = Intent(Intent.ACTION_GET_CONTENT)
+        chooseFile.type = "*/*"
+        chooseFile = Intent.createChooser(chooseFile, "Choose a file")
+        startActivityForResult(chooseFile, 1)
+    }
+
+    private fun readExcelFileFromAssets(myInput: InputStream) {
         try {
-            val myInput: InputStream
-            // initialize asset manager
-            val assetManager = assets
-            //  open excel sheet
-            myInput = assetManager.open("myExcel.xls")
             // Create a POI File System object
             val myFileSystem = POIFSFileSystem(myInput)
             // Create a workbook using the File System
@@ -87,7 +119,6 @@ class ExportActivity : AppCompatActivity() {
             var rowno = 0
             textView!!.append("\n")
             while (rowIter.hasNext()) {
-                Log.e(TAG, " row no $rowno")
                 val myRow = rowIter.next() as HSSFRow
                 if (rowno != 0) {
                     val cellIter = myRow.cellIterator()
@@ -124,11 +155,6 @@ class ExportActivity : AppCompatActivity() {
                     }
                    // textView.append("$sno -- $date  -- $det\n")
                    // Log.i("HEILLO Slno", readSlno)
-                    Log.i("HEILLO Date", readDate)
-                    Log.i("HEILLO Type", readType)
-                    Log.i("HEILLO CAtegory", readCategory)
-                    Log.i("HEILLO Memo", readMemo)
-                    Log.i("HEILLO Amount", readAmount)
 
                     val user = User(readType, readCategory, readMemo, readAmount.toInt(), readDate)
                     val db = DataBaseHandler(this)
@@ -138,7 +164,6 @@ class ExportActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.import_success), Toast.LENGTH_LONG).show()
             }
         } catch (e: java.lang.Exception) {
-            Log.e(TAG, "error $e")
         }
     }
     /* Import from storage excel end*/
@@ -194,7 +219,6 @@ class ExportActivity : AppCompatActivity() {
             tvSuccess.text = getString(R.string.upload_success_to_drive)
         }.addOnFailureListener { e ->
             progressDialog.dismiss()
-            Log.i("dd", java.lang.String.valueOf(e))
             Toast.makeText(this@ExportActivity, getString(R.string.check_internet), Toast.LENGTH_SHORT).show()
         }
     }
@@ -211,18 +235,6 @@ class ExportActivity : AppCompatActivity() {
     }
     /* Drive sign in code end */
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            400 -> if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    handleSignInIntent(data)
-                }
-            }
-        }
-    }
-
     private fun handleSignInIntent(data: Intent) {
         GoogleSignIn.getSignedInAccountFromIntent(data)
                 .addOnSuccessListener { googleSignInAccount ->
@@ -230,9 +242,9 @@ class ExportActivity : AppCompatActivity() {
                             .usingOAuth2(this@ExportActivity, setOf(DriveScopes.DRIVE_FILE))
                     credential.selectedAccount = googleSignInAccount.account
                     val googleDriveService = Drive.Builder(
-                        AndroidHttp.newCompatibleTransport(),
-                        GsonFactory(),
-                        credential
+                            AndroidHttp.newCompatibleTransport(),
+                            GsonFactory(),
+                            credential
                     )
                             .setApplicationName(getString(R.string.app_name))
                             .build()
@@ -381,14 +393,16 @@ class ExportActivity : AppCompatActivity() {
         sheet1.setColumnWidth(5, 15 * 500)
 
         // Create a path where we will place our List of objects on external storage
-        val file = File(context.getExternalFilesDir(null), fileName)
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+        Log.d("hello", file.toString())
+//                File(context.getExternalFilesDir(null), fileName)
 
         var os: FileOutputStream? = null
         try {
             os = FileOutputStream(file)
             wb.write(os)
-            Log.w("FileUtils", "Writing file$file")
-            Toast.makeText(context, "Writing file$file", Toast.LENGTH_SHORT).show()
+            Log.w("FileUtils", "Files Stored in: $file")
+            Toast.makeText(context, "Files Stored in: $file", Toast.LENGTH_LONG).show()
             success = true
         } catch (e: IOException) {
             Log.w("FileUtils", "Error writing $file", e)
@@ -398,6 +412,7 @@ class ExportActivity : AppCompatActivity() {
             try {
                 os?.close()
             } catch (ex: Exception) {
+                Log.e("hello", ex.toString())
             }
         }
         return success

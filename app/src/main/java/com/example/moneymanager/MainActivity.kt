@@ -1,8 +1,10 @@
 package com.example.moneymanager
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -16,6 +18,8 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.PieChart
@@ -33,7 +37,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
-
+    private val REQUEST_WRITE_STORAGE = 112
     private lateinit var endDa: String
     private lateinit var toggle: ActionBarDrawerToggle
     private var db = DataBaseHandler(this)
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvChart: TextView
     private lateinit var tvTransactions: TextView
     private lateinit var tvNoTransactions: TextView
+    private lateinit var tvPercentage: TextView
     private lateinit var line2: View
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -154,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     }
     //Getting the days count of each month END
 
-    private fun listViewData (s: CharSequence, e: CharSequence) {
+    private fun listViewData(s: CharSequence, e: CharSequence) {
 
         val data = db.getDataDate(s, e)
         val empArrayMemo = Array(data.size) { "null" }
@@ -175,12 +180,14 @@ class MainActivity : AppCompatActivity() {
             tvChart.visibility = View.GONE
             line2.visibility = View.GONE
             tvNoTransactions.visibility = View.VISIBLE
+            tvPercentage.visibility = View.GONE
         } else {
 
             tvTransactions.visibility = View.VISIBLE
             tvChart.visibility = View.VISIBLE
             line2.visibility = View.VISIBLE
             tvNoTransactions.visibility = View.GONE
+            tvPercentage.visibility = View.VISIBLE
         }
     }
 
@@ -250,10 +257,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val hasPermission = ContextCompat.checkSelfPermission(baseContext,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) === PackageManager.PERMISSION_GRANTED
+            if (!hasPermission) {
+                ActivityCompat.requestPermissions(this@MainActivity, arrayOf<String>(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.INTERNET
+                ),
+                        REQUEST_WRITE_STORAGE)
+            } else {
+                //startMainActivity()
+            }
+        }
+
         title = "Dashboard"
         tvChart = findViewById(R.id.tvChart)
         tvTransactions = findViewById(R.id.tvTransactions)
         tvNoTransactions = findViewById(R.id.tvNoTransactions)
+        tvPercentage = findViewById(R.id.tvPercentage)
+        tvPercentage.visibility = View.INVISIBLE
         line2 = findViewById(R.id.line2)
         pieChartIncome = findViewById(R.id.pieChartIncome)
         pieChartExpense = findViewById(R.id.pieChartExpense)
@@ -274,6 +297,7 @@ class MainActivity : AppCompatActivity() {
         calendarView = findViewById(R.id.calendarView)
         tvMonth = findViewById(R.id.tvMonth)
         calendarView.visibility = View.GONE
+
 
         /*Pie chart Initialization START*/
         val pieDataSet = PieDataSet(visitors, "Income")
@@ -399,7 +423,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             var startDateString = ""
-            for (i in 0 until yearMonth.length-1) {
+            for (i in 0 until yearMonth.length - 1) {
 
                 startDateString += yearMonth[i].toString()
             }

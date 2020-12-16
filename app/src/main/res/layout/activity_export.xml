@@ -76,7 +76,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/ralewaymedium"
-                android:onClick="saveImport"
+                android:onClick="getPath"
                 android:text="@string/import_from_storage"
                 android:textSize="12sp" />
 

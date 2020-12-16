@@ -77,6 +77,7 @@
     <string name="fire_notification">Fire notification at 20:00</string>
     <string name="reminder_off">Reminder turned off</string>
     <string name="smart_remainder">Smart reminder</string>
+    <string name="chart_values_are_represented_in_percent">Chart values are represented in percent!</string>
 
     <!-- Sign Up Activity -->
 </resources>

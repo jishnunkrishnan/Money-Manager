@@ -24,16 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/loginButtonFacebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp" />
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
     </LinearLayout>
     </RelativeLayout>
     <com.google.android.material.navigation.NavigationView

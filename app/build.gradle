@@ -79,6 +79,8 @@ dependencies {
     }
     implementation 'com.google.http-client:google-http-client-gson:1.26.0'
 
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+
     //implementation "org.apache.poi:poi:3.17"
     //implementation "org.apache.poi:poi-ooxml:3.17"
 }
