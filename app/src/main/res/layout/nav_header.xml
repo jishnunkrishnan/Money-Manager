@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:onClick="gotoProfile"
+    android:background="#F5FFFA">
+
+    <ImageView
+        android:id="@+id/ivProfileNav"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="30dp" />
+    <TextView
+        android:id="@+id/tvProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfileNav"
+        android:layout_marginLeft="22dp"
+        android:fontFamily="@font/ralewaysemibold"
+        android:text="Profile"
+        android:textColor="#000"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvNameNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvProfile"
+        android:layout_marginLeft="22dp"
+        android:fontFamily="@font/ralewaymedium"
+        android:text=""
+        android:textColor="#000" />
+    <TextView
+        android:id="@+id/tvEmailNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNameNav"
+        android:layout_marginLeft="22dp"
+        android:fontFamily="@font/ralewaymedium"
+        android:text=""
+        android:textColor="#000" />
+</RelativeLayout>

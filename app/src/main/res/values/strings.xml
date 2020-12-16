@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">Money Manager</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="facebook_app_id">2838702519663375</string>
+    <string name="fb_login_protocol_scheme">fb2838702519663375</string>
+
+    <!-- Category Activity -->
+    <string name="income_category">Income Categories</string>
+    <string name="expense_category">Expense Categories</string>
+    <string name="add_category">Add Category</string>
+    <string name="add_income_category">Add Income Category</string>
+    <string name="add_expense_category">Add Expense Category</string>
+    <string name="title_categories">Categories</string>
+    <string name="please_enter_category">Please enter category name!</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="success_message">Data saved successfully</string>
+    <string name="category_name">Category Name</string>
+
+    <!-- Export Activity -->
+    <string name="download_success">Downloaded Successfully</string>
+    <string name="import_success">Data imported successfully</string>
+    <string name="upload_to_drive">Uploading to Google Drive</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="upload_success">Uploaded Successfully</string>
+    <string name="upload_success_to_drive">Uploaded successfully to drive</string>
+    <string name="check_internet">Check internet connection</string>
+    <string name="sl_no">Sl No.</string>
+    <string name="date">Date</string>
+    <string name="income_expense">Income/ Expense</string>
+    <string name="category">Category</string>
+    <string name="memo">Memo</string>
+    <string name="amount">Amount</string>
+    <string name="export_info">You can import and export your daily expenses as excel</string>
+    <string name="export_to_storage">Export to storage</string>
+    <string name="export_to_drive">Export to drive</string>
+    <string name="import_from_storage">Import from storage</string>
+    <string name="import_from_drive">Import from drive</string>
+    <string name="reports">Reports</string>
+
+    <!-- Income Expense Activity -->
+    <string name="save">Save</string>
+    <string name="please_fill_fields">Please enter these fields!</string>
+
+    <!-- Main Activity -->
+    <string name="january">Jan</string>
+    <string name="february">Feb</string>
+    <string name="march">Mar</string>
+    <string name="april">Apr</string>
+    <string name="may">May</string>
+    <string name="june">Jun</string>
+    <string name="july">Jul</string>
+    <string name="august">Aug</string>
+    <string name="september">Sep</string>
+    <string name="october">Oct</string>
+    <string name="november">Nov</string>
+    <string name="december">Dec</string>
+    <string name="no_transactions_click_one">No Transactions\nClick \'+\' to add one!</string>
+
+    <string name="zero">0</string>
+    <string name="income_main">INCOME</string>
+    <string name="expenses_main">EXPENSES</string>
+    <string name="balance_main">BALANCE</string>
+    <string name="finance_chart">Finance Chart</string>
+    <string name="transactions">Transactions</string>
+
+    <!-- Profile Activity -->
+    <string name="name_profile">Name:</string>
+    <string name="email_profile">Email:</string>
+    <string name="save_profile">Save</string>
+    <string name="sign_out_profile">Sign Out</string>
+
+    <!-- Setting Activity -->
+    <string name="money_manager_notification">Money Manger Notification</string>
+    <string name="channel_money_manager">Channel for Money Manger</string>
+    <string name="fire_notification">Fire notification at 20:00</string>
+    <string name="reminder_off">Reminder turned off</string>
+    <string name="smart_remainder">Smart reminder</string>
+
+    <!-- Sign Up Activity -->
+</resources>
