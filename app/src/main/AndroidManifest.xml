@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.moneymanager">
+    package="com.jishnunkrishnan.moneymanager">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyManager">
-        <activity android:name=".ExportActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".IncomeExpenseActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.ExportActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.SignUpActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.ProfileActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.SettingsActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.CategoryActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.IncomeExpenseActivity" />
+        <activity android:name="com.jishnunkrishnan.moneymanager.MainActivity" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name="com.jishnunkrishnan.moneymanager.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +52,7 @@
             android:value="@string/facebook_app_id"
             tools:replace="android:value" />
 
-        <receiver android:name=".ReminderBroadcast" />
+        <receiver android:name="com.jishnunkrishnan.moneymanager.ReminderBroadcast" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
